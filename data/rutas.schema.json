@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rapidito.app/schemas/rutas.schema.json",
+  "title": "Rapidito · red de transporte de una ciudad",
+  "description": "FeatureCollection GeoJSON. Cada Feature es un recorrido en un solo sentido; una línea bidireccional tiene un Feature de ida y otro de vuelta. Las ids de Feature deben ser únicas.",
+  "type": "object",
+  "required": ["type", "features"],
+  "properties": {
+    "type": {
+      "const": "FeatureCollection"
+    },
+    "name": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "disclaimer": {
+      "type": "string"
+    },
+    "features": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Puede estar vacío mientras la comunidad digitaliza la red.",
+      "items": {
+        "$ref": "#/$defs/routeFeature"
+      }
+    }
+  },
+  "$defs": {
+    "position": {
+      "description": "Coordenada GeoJSON en orden [longitud, latitud].",
+      "type": "array",
+      "prefixItems": [
+        { "type": "number", "minimum": -180, "maximum": 180 },
+        { "type": "number", "minimum": -90, "maximum": 90 }
+      ],
+      "items": false,
+      "minItems": 2
+    },
+    "stop": {
+      "type": "object",
+      "required": ["nombre", "coord"],
+      "properties": {
+        "nombre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coord": {
+          "$ref": "#/$defs/position"
+        }
+      },
+      "additionalProperties": false
+    },
+    "routeProperties": {
+      "type": "object",
+      "required": [
+        "id",
+        "grupo",
+        "nombre",
+        "sentido",
+        "origen",
+        "destino",
+        "color",
+        "frecuenciaMin",
+        "paradas"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grupo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nombre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sentido": {
+          "enum": ["ida", "vuelta"]
+        },
+        "origen": {
+          "type": "string",
+          "minLength": 1
+        },
+        "destino": {
+          "type": "string",
+          "minLength": 1
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "frecuenciaMin": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "horario": {
+          "type": "string"
+        },
+        "accesible": {
+          "type": "boolean"
+        },
+        "fuente": {
+          "type": "string"
+        },
+        "actualizado": {
+          "type": "string",
+          "format": "date"
+        },
+        "verificado": {
+          "type": "boolean"
+        },
+        "paradas": {
+          "type": "array",
+          "minItems": 2,
+          "description": "En el orden en que las recorre este sentido.",
+          "items": {
+            "$ref": "#/$defs/stop"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "routeFeature": {
+      "type": "object",
+      "required": ["type", "properties", "geometry"],
+      "properties": {
+        "type": {
+          "const": "Feature"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "properties": {
+          "$ref": "#/$defs/routeProperties"
+        },
+        "geometry": {
+          "type": "object",
+          "required": ["type", "coordinates"],
+          "properties": {
+            "type": {
+              "const": "LineString"
+            },
+            "coordinates": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/position"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

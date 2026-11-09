@@ -1,0 +1,18 @@
+# Dependencias (este proyecto no tiene de producción)
+node_modules/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Entornos y logs
+.env
+.env.*
+*.log
+
+# Artefactos temporales de pruebas locales
+coverage/
+playwright-report/
+test-results/

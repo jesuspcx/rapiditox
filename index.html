@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es-VE" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Rapidito</title>
+  <meta name="description" content="Rapidito cruza tu GPS y tu destino con las líneas de transporte de Barquisimeto: parada, sentido y pasaje en bolívares con la tasa oficial BCV.">
+  <meta name="theme-color" content="#305CDE">
+  <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; connect-src 'self' https://nominatim.openstreetmap.org https://router.project-osrm.org https://ve.dolarapi.com; worker-src 'self'; manifest-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/logo-rapidito.svg">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rapidito">
+  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="preconnect" href="https://nominatim.openstreetmap.org" crossorigin>
+  <link rel="preconnect" href="https://router.project-osrm.org" crossorigin>
+  <link rel="preconnect" href="https://ve.dolarapi.com" crossorigin>
+  <link rel="stylesheet" href="./vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="./css/app.css">
+  <script src="./js/theme-init.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#sheet">Saltar al panel de rutas</a>
+
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="logo-rapidito" viewBox="0 0 1080 1080">
+      <rect width="1080" height="1080" rx="240" fill="#305CDE" stroke="none"></rect>
+      <g fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round">
+        <path d="M 100 430 L 200 430"></path>
+        <path d="M 60 520 L 160 520"></path>
+        <path d="M 30 610 L 110 610"></path>
+      </g>
+      <path d="M 220 730 C 120 730, 120 590, 220 510 C 240 410, 360 390, 400 450 C 460 270, 680 290, 720 470 C 900 470, 960 610, 880 710 C 860 730, 840 730, 820 730 A 110 110 0 0 0 600 730 L 440 730 A 110 110 0 0 0 220 730 Z" fill="#FFFFFF" stroke="none"></path>
+      <circle cx="330" cy="730" r="80" fill="#FFFFFF" stroke="none"></circle>
+      <circle cx="710" cy="730" r="80" fill="#FFFFFF" stroke="none"></circle>
+      <circle cx="330" cy="730" r="32" fill="#305CDE" stroke="none"></circle>
+      <circle cx="710" cy="730" r="32" fill="#305CDE" stroke="none"></circle>
+      <path d="M 620 370 Q 690 370, 700 460 L 600 460 Z" fill="#305CDE" stroke="#305CDE" stroke-width="20" stroke-linejoin="round"></path>
+      <path d="M 460 610 L 500 430 M 500 430 L 580 430 C 640 430, 640 520, 580 520 L 480 520 M 540 520 L 600 610" fill="none" stroke="#305CDE" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"></path>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="m20 20-4-4"></path>
+    </symbol>
+    <symbol id="icon-locate" viewBox="0 0 24 24">
+      <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+    </symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24">
+      <circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"></circle>
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle>
+      <circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"></circle>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"></path>
+    </symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"></path>
+    </symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+      <path d="M19 12H5M11 18l-6-6 6-6"></path>
+    </symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6"></path>
+    </symbol>
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24">
+      <path d="m9 18 6-6-6-6"></path>
+    </symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24">
+      <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"></path>
+      <circle cx="12" cy="10" r="2.5"></circle>
+    </symbol>
+    <symbol id="icon-walk" viewBox="0 0 24 24">
+      <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"></path>
+      <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"></path>
+      <path d="M16 17h4M4 13h4"></path>
+    </symbol>
+    <symbol id="icon-bus" viewBox="0 0 24 24">
+      <path d="M5 17h14a1 1 0 0 0 1-1V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9a1 1 0 0 0 1 1Z"></path>
+      <path d="M4 10h16M8 17v2M16 17v2M8 7h.01M16 7h.01"></path>
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M12 7v5l3 2"></path>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24">
+      <path d="m5 12 4.5 4.5L19 6"></path>
+    </symbol>
+    <symbol id="icon-route" viewBox="0 0 24 24">
+      <circle cx="6" cy="19" r="3"></circle>
+      <circle cx="18" cy="5" r="3"></circle>
+      <path d="M8.7 17.4c2.7-1.5 1.7-5.7 4.4-7.7 1.3-.9 2.1-2.1 2.1-2.1"></path>
+    </symbol>
+    <symbol id="icon-ticket" viewBox="0 0 24 24">
+      <path d="M3 9V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v3a3 3 0 0 0 0 6v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3a3 3 0 0 0 0-6Z"></path>
+      <path d="M13 5v2M13 11v2M13 17v2"></path>
+    </symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24">
+      <path d="m12 2 9 5-9 5-9-5 9-5Z"></path>
+      <path d="m3 12 9 5 9-5M3 17l9 5 9-5"></path>
+    </symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24">
+      <path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M4 21h16M9 7h2M9 11h2M9 15h2M16 9h3a1 1 0 0 1 1 1v11"></path>
+    </symbol>
+    <symbol id="icon-town" viewBox="0 0 24 24">
+      <path d="m3 21 0-8 5-5 5 5v8M13 21v-4l4-4 4 4v4M2 21h20"></path>
+    </symbol>
+    <symbol id="icon-landmark" viewBox="0 0 24 24">
+      <path d="m3 10 9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18M2 10h20"></path>
+    </symbol>
+    <symbol id="icon-plaza" viewBox="0 0 24 24">
+      <path d="M12 22v-7M8.5 15h7a4 4 0 0 0 0-8 5 5 0 0 0-9 2 3.5 3.5 0 0 0 2.5 6Z"></path>
+    </symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M12 11v5M12 8h.01"></path>
+    </symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.42"></path>
+    </symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24">
+      <path d="M20 11a8 8 0 1 0-2.3 5.7"></path>
+      <path d="M20 4v7h-7"></path>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+      <path d="m9 12 2 2 4-4"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 3v12M7 10l5 5 5-5M5 21h14"></path>
+    </symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24">
+      <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+    </symbol>
+    <symbol id="icon-map" viewBox="0 0 24 24">
+      <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"></path>
+      <path d="M9 3v15M15 6v15"></path>
+    </symbol>
+    <symbol id="icon-sparkle" viewBox="0 0 24 24">
+      <path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3Z"></path>
+    </symbol>
+  </svg>
+
+  <div id="map" class="map" role="application" aria-label="Mapa interactivo de líneas de transporte de Barquisimeto"></div>
+  <div class="map-tint" aria-hidden="true"></div>
+
+  <div id="boot" class="boot" aria-busy="true">
+    <div class="boot__inner">
+      <span class="boot__mark"><svg class="logo-rapidito" viewBox="0 0 1080 1080" aria-hidden="true" focusable="false"><use href="#logo-rapidito"></use></svg></span>
+      <div class="boot__brand">
+        <strong>Rapidito</strong>
+        <span>Barquisimeto</span>
+      </div>
+      <span class="boot__loader" aria-hidden="true"></span>
+      <p id="boot-status">Cargando la ciudad…</p>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <div class="search-stack">
+      <form id="search-form" class="search-pill glass" role="search" novalidate>
+        <button type="button" class="brand-tile" data-action="home" aria-label="Rapidito: volver al inicio">
+          <svg class="logo-rapidito" viewBox="0 0 1080 1080" aria-hidden="true" focusable="false"><use href="#logo-rapidito"></use></svg>
+        </button>
+        <span class="brand-word" aria-hidden="true">Rapidito</span>
+        <div class="search-field">
+          <label class="sr-only" for="search-input">Buscar un destino en Barquisimeto</label>
+          <svg class="icon search-field__icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+          <input
+            id="search-input"
+            name="destination"
+            type="search"
+            placeholder="¿A dónde vas?"
+            inputmode="search"
+            enterkeyhint="search"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="search-suggestions"
+          >
+          <button id="clear-search" class="clear-search" type="button" data-action="clear-search" aria-label="Borrar destino" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+          </button>
+        </div>
+        <button id="locate-button" class="locate-button" type="button" data-action="refresh-location" aria-label="Usar mi ubicación actual">
+          <svg class="icon" aria-hidden="true"><use href="#icon-locate"></use></svg>
+        </button>
+      </form>
+      <div id="search-suggestions" class="suggestions glass" aria-live="polite" hidden></div>
+    </div>
+    <button id="menu-button" class="header-button glass" type="button" data-action="open-menu" aria-label="Abrir menú de Rapidito">
+      <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+    </button>
+  </header>
+
+  <main id="sheet" class="sheet glass" aria-label="Panel de viaje de Rapidito">
+    <div class="sheet__handle" aria-hidden="true"><span></span></div>
+    <div id="sheet-content" class="sheet__content"></div>
+  </main>
+
+  <div id="dialog-root" class="dialog-root" hidden>
+    <section id="dialog-panel" class="dialog glass" role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1">
+      <div class="dialog__handle" aria-hidden="true"><span></span></div>
+      <header class="dialog__head">
+        <div>
+          <p id="dialog-kicker" class="dialog__kicker" hidden></p>
+          <h2 id="dialog-title">Menú</h2>
+        </div>
+        <button id="dialog-close" class="icon-button icon-button--soft" type="button" aria-label="Cerrar panel">
+          <svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+        </button>
+      </header>
+      <div id="dialog-body" class="dialog__body"></div>
+    </section>
+  </div>
+
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
+
+  <noscript>
+    <div class="noscript">Rapidito necesita JavaScript para calcular tu ruta y dibujar el mapa.</div>
+  </noscript>
+
+  <script src="./vendor/leaflet/leaflet.js"></script>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "ciudad": "Barquisimeto",
+  "actualizado": "2026-11-07T00:00:00-04:00",
+  "nota": "Atajos editoriales de Barquisimeto. No sustituyen la búsqueda de direcciones.",
+  "lugares": [
+    {
+      "id": "sambil-barquisimeto",
+      "nombre": "Sambil Barquisimeto",
+      "detalle": "Av. Venezuela · zona este",
+      "lat": 10.0715736,
+      "lon": -69.2934301,
+      "icono": "building"
+    },
+    {
+      "id": "terminal-pasajeros",
+      "nombre": "Terminal de Pasajeros",
+      "detalle": "Carrera 24 · oeste",
+      "lat": 10.0691316,
+      "lon": -69.3340724,
+      "icono": "bus"
+    },
+    {
+      "id": "ucla",
+      "nombre": "UCLA",
+      "detalle": "Av. Florencio Jiménez · oeste",
+      "lat": 10.0661162,
+      "lon": -69.3624945,
+      "icono": "landmark"
+    },
+    {
+      "id": "cabudare",
+      "nombre": "Cabudare",
+      "detalle": "Municipio Palavecino · este",
+      "lat": 10.0260507,
+      "lon": -69.2436557,
+      "icono": "town"
+    },
+    {
+      "id": "las-trinitarias",
+      "nombre": "Las Trinitarias",
+      "detalle": "Av. Libertador · noreste",
+      "lat": 10.0808248,
+      "lon": -69.2813554,
+      "icono": "building"
+    }
+  ]
+}

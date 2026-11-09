@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Rapidito">
+  <title>Rapidito</title>
+  <rect width="1080" height="1080" rx="240" fill="#305CDE"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round">
+    <path d="M 100 430 L 200 430"/>
+    <path d="M 60 520 L 160 520"/>
+    <path d="M 30 610 L 110 610"/>
+  </g>
+  <path d="M 220 730
+           C 120 730, 120 590, 220 510
+           C 240 410, 360 390, 400 450
+           C 460 270, 680 290, 720 470
+           C 900 470, 960 610, 880 710
+           C 860 730, 840 730, 820 730
+           A 110 110 0 0 0 600 730
+           L 440 730
+           A 110 110 0 0 0 220 730
+           Z" fill="#FFFFFF"/>
+  <circle cx="330" cy="730" r="80" fill="#FFFFFF"/>
+  <circle cx="710" cy="730" r="80" fill="#FFFFFF"/>
+  <circle cx="330" cy="730" r="32" fill="#305CDE"/>
+  <circle cx="710" cy="730" r="32" fill="#305CDE"/>
+  <path d="M 620 370
+           Q 690 370, 700 460
+           L 600 460
+           Z" fill="#305CDE" stroke="#305CDE" stroke-width="20" stroke-linejoin="round"/>
+  <path d="M 460 610 L 500 430
+           M 500 430 L 580 430 C 640 430, 640 520, 580 520 L 480 520
+           M 540 520 L 600 610" fill="none" stroke="#305CDE" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

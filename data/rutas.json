@@ -1,0 +1,8 @@
+{
+  "type": "FeatureCollection",
+  "name": "Red de Barquisimeto · pendiente de digitalización",
+  "city": "Barquisimeto, Venezuela",
+  "updated_at": "2026-11-07T00:00:00-04:00",
+  "disclaimer": "La red aún no tiene líneas digitalizadas. La aplicación está lista para recibir rutas validadas en data/rutas.json.",
+  "features": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "rapidito",
+  "version": "0.3.8",
+  "private": true,
+  "type": "module",
+  "description": "PWA de rutas de transporte urbano para Barquisimeto, con cruce espacial, validación de sentido y tarifa BCV.",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
